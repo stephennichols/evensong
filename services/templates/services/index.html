@@ -1,12 +1,13 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Evensong finder</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}" >
-</head>
-<body>
-<h1>Evensong finder</h1>
-</body>
-</html>
+{% extends "services/base.html" %}
+{% block content %}
+    <h2>Future services</h2>
+    {% if latest_services %}
+    <ul>
+        {% for service in latest_services %}
+        <li><a href="/services/{{ service.id }}/">{{ service }}</a></li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No services are available.</p>
+    {% endif %}
+{% endblock %}
