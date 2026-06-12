@@ -1,5 +1,36 @@
 {% extends "services/base.html" %}
 {% block content %}
-    <h2>Specific service</h2>
-    <p>{{ service }}</p>
+    <h2>Evensong</h2>
+    <h3>{{ service.venue }}</h3>
+    {% include "services/externalLink.html" with url=service.venue.websiteUrl name="Website" %}
+    {% include "services/externalLink.html" with url=service.venue.wikiUrl name="Wikipedia" %}
+    {% include "services/externalLink.html" with url=service.venue.mapUrl name="Map" %}
+    <p>{{ service.startDateTime }}</p>
+    {% if service.conductor != None %}
+        <p>
+            <label>Conductor:</label>
+            <span>{{ service.conductor.fullName }}</span>
+            {% include "services/externalLink.html" with url=service.conductor.wikiUrl name="Wikipedia" %}
+        </p>
+    {% endif %}
+    <p>Music List:</p>
+    <ul>
+        <li>
+            <label>Responses:</label>
+            <span>{{ service.musicList.responses.knownAs }}</span>
+            {% include "services/externalLink.html" with url=service.musicList.responses.composer.wikiUrl name="Wikipedia" %}
+        </li>
+        <li>
+            <label>Canticles:</label>
+            <span>{{ service.musicList.canticles.knownAs }}</span>
+            {% include "services/externalLink.html" with url=service.musicList.canticles.composer.wikiUrl name="Wikipedia" %}
+        </li>
+        <li>
+            <label>Anthem:</label>
+            <span>{{ service.musicList.anthem.title }}
+                <i>{{ service.musicList.anthem.composer.knownAs }}</i>
+                {% include "services/externalLink.html" with url=service.musicList.anthem.composer.wikiUrl name="Wikipedia" %}
+            </span>
+        </li>
+    </ul>
 {% endblock %}

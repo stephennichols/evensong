@@ -10,8 +10,9 @@ class ExternalUrl(models.Model):
 class Venue(models.Model):
     name = models.CharField(max_length=50)
     townCity = models.CharField(max_length=50)
-    map = models.ForeignKey(ExternalUrl, on_delete=models.CASCADE, related_name="venueMap", blank=True, null=True)
+    mapUrl = models.ForeignKey(ExternalUrl, on_delete=models.CASCADE, related_name="venueMap", blank=True, null=True)
     wikiUrl = models.ForeignKey(ExternalUrl, on_delete=models.CASCADE, related_name="venueWikiUrl", blank=True, null=True)
+    websiteUrl = models.ForeignKey(ExternalUrl, on_delete=models.CASCADE, related_name="venueWebsite", blank=True, null=True)
     def __str__(self):
         return self.name
 
