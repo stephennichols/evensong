@@ -39,11 +39,15 @@ class Canticles(models.Model):
     description = models.CharField(max_length=255)
     composer = models.ForeignKey(Musician, on_delete=models.CASCADE)
     knownAs = models.CharField(max_length=255)
+    def __str__(self):
+        return self.knownAs
 
 class Responses(models.Model):
     title = models.CharField(max_length=255, blank=True, null=True)
     composer = models.ForeignKey(Musician, on_delete=models.CASCADE)
     knownAs = models.CharField(max_length=255)
+    def __str__(self):
+        return self.knownAs
 
 class MusicList(models.Model):
     responses = models.ForeignKey(Responses, on_delete=models.CASCADE)
