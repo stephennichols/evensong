@@ -10,42 +10,42 @@ class ExternalUrl(models.Model):
 class Venue(models.Model):
     name = models.CharField(max_length=50)
     townCity = models.CharField(max_length=50)
-    mapUrl = models.ForeignKey(ExternalUrl, on_delete=models.CASCADE, related_name="venueMap", blank=True, null=True)
-    wikiUrl = models.ForeignKey(ExternalUrl, on_delete=models.CASCADE, related_name="venueWikiUrl", blank=True, null=True)
-    websiteUrl = models.ForeignKey(ExternalUrl, on_delete=models.CASCADE, related_name="venueWebsite", blank=True, null=True)
+    mapUrl = models.OneToOneField(ExternalUrl, on_delete=models.CASCADE, related_name="venueMap", blank=True, null=True)
+    wikiUrl = models.OneToOneField(ExternalUrl, on_delete=models.CASCADE, related_name="venueWikiUrl", blank=True, null=True)
+    websiteUrl = models.OneToOneField(ExternalUrl, on_delete=models.CASCADE, related_name="venueWebsite", blank=True, null=True)
     def __str__(self):
         return self.name
 
 class Musician(models.Model):
     fullName = models.CharField(max_length=255)
     knownAs = models.CharField(max_length=255, blank=True, null=True)
-    wikiUrl = models.ForeignKey(ExternalUrl, on_delete=models.CASCADE, related_name="musicianWikiUrl", blank=True, null=True)
+    wikiUrl = models.OneToOneField(ExternalUrl, on_delete=models.CASCADE, related_name="musicianWikiUrl", blank=True, null=True)
     def __str__(self):
         return self.knownAs if self.knownAs != "" and self.knownAs is not None else self.fullName
 
 class Choir(models.Model):
     name = models.CharField(max_length=255)
-    homeVenue = models.ForeignKey(Venue, on_delete=models.CASCADE, blank=True, null=True)
+    homeVenue = models.OneToOneField(Venue, on_delete=models.CASCADE, blank=True, null=True)
     def __str__(self):
         return self.name
 
 class Anthem(models.Model):
     title = models.CharField(max_length=255)
-    composer = models.ForeignKey(Musician, on_delete=models.CASCADE)
+    composer = models.OneToOneField(Musician, on_delete=models.CASCADE)
     knownAs = models.CharField(max_length=255, blank=True, null=True)
     def __str__(self):
         return self.knownAs if self.knownAs != "" and self.knownAs is not None else self.title
 
 class Canticles(models.Model):
     description = models.CharField(max_length=255)
-    composer = models.ForeignKey(Musician, on_delete=models.CASCADE)
+    composer = models.OneToOneField(Musician, on_delete=models.CASCADE)
     knownAs = models.CharField(max_length=255)
     def __str__(self):
         return self.knownAs
 
 class Responses(models.Model):
     title = models.CharField(max_length=255, blank=True, null=True)
-    composer = models.ForeignKey(Musician, on_delete=models.CASCADE)
+    composer = models.OneToOneField(Musician, on_delete=models.CASCADE)
     knownAs = models.CharField(max_length=255)
     def __str__(self):
         return self.knownAs
