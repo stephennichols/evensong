@@ -2,7 +2,7 @@ from django.db import models
 
 class ExternalUrl(models.Model):
     urlType = models.CharField(max_length=50)
-    value = models.CharField(max_length=255)
+    value = models.URLField(max_length=255)
     lastVerified =  models.DateTimeField()
     def __str__(self):
         return self.value
@@ -50,18 +50,18 @@ class Responses(models.Model):
         return self.knownAs
 
 class MusicList(models.Model):
-    responses = models.ForeignKey(Responses, on_delete=models.CASCADE)
-    canticles = models.ForeignKey(Canticles, on_delete=models.CASCADE)
-    anthem = models.ForeignKey(Anthem, on_delete=models.CASCADE)
+    responses = models.OneToOneField(Responses, on_delete=models.CASCADE)
+    canticles = models.OneToOneField(Canticles, on_delete=models.CASCADE)
+    anthem = models.ForeignKey(Anthem, on_delete=models.CASCADE, unique=False)
     def __str__(self):
         return self.responses.knownAs + " Responses, " + self.canticles.knownAs + ", " + self.anthem.__str__()
 
 class Service(models.Model):
-    venue = models.ForeignKey(Venue, on_delete=models.CASCADE, related_name="serviceVenue")
+    venue = models.OneToOneField(Venue, on_delete=models.CASCADE)
     startDateTime = models.DateTimeField()
     conductor = models.ForeignKey(Musician, on_delete=models.CASCADE, blank=True, null=True)
     choir = models.ForeignKey(Choir, on_delete=models.CASCADE, related_name="serviceChoir", blank=True, null=True)
-    musicList = models.ForeignKey(MusicList, on_delete=models.CASCADE)
+    musicList = models.OneToOneField(MusicList, on_delete=models.CASCADE)
     def __str__(self):
         return self.venue.name + " " + self.startDateTime.strftime('%d %h %Y %H:%M')
 
