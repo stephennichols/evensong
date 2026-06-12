@@ -1,6 +1,7 @@
 {% extends "services/base.html" %}
 {% block content %}
     <h2>Evensong</h2>
+    <a href="/services/">Back to services</a>
     <h3>{{ service.venue }}</h3>
     {% include "services/externalLink.html" with url=service.venue.websiteUrl name="Website" %}
     {% include "services/externalLink.html" with url=service.venue.wikiUrl name="Wikipedia" %}
@@ -9,7 +10,7 @@
     {% if service.conductor != None %}
         <p>
             <label>Conductor:</label>
-            <span>{{ service.conductor.fullName }}</span>
+            <a href="/services/musicians/{{ service.conductor_id }}/">{{ service.conductor.fullName }}</a>
             {% include "services/externalLink.html" with url=service.conductor.wikiUrl name="Wikipedia" %}
         </p>
     {% endif %}
@@ -17,18 +18,18 @@
     <ul>
         <li>
             <label>Responses:</label>
-            <span>{{ service.musicList.responses.knownAs }}</span>
+            <a href="/services/responses/{{ service.musicList.responses_id }}/">{{ service.musicList.responses.knownAs }}</a>
             {% include "services/externalLink.html" with url=service.musicList.responses.composer.wikiUrl name="Wikipedia" %}
         </li>
         <li>
             <label>Canticles:</label>
-            <span>{{ service.musicList.canticles.knownAs }}</span>
+            <a href="/services/canticles/{{ service.musicList.canticles_id }}/">{{ service.musicList.canticles.knownAs }}</a>
             {% include "services/externalLink.html" with url=service.musicList.canticles.composer.wikiUrl name="Wikipedia" %}
         </li>
         <li>
             <label>Anthem:</label>
-            <span>{{ service.musicList.anthem.title }}
-                <i>{{ service.musicList.anthem.composer.knownAs }}</i>
+            <span><a href="/services/anthems/{{ service.musicList.anthem_id }}/">{{ service.musicList.anthem.title }}</a>
+                <i><a href="/services/musicians/{{ service.musicList.anthem.composer_id }}/">{{ service.musicList.anthem.composer.knownAs }}</a></i>
                 {% include "services/externalLink.html" with url=service.musicList.anthem.composer.wikiUrl name="Wikipedia" %}
             </span>
         </li>
