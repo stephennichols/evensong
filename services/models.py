@@ -22,6 +22,7 @@ class Musician(models.Model):
     fullName = models.CharField(max_length=255)
     knownAs = models.CharField(max_length=255, blank=True, null=True)
     wikiUrl = models.OneToOneField(ExternalUrl, on_delete=models.CASCADE, related_name="musicianWikiUrl", blank=True, null=True)
+    websiteUrl = models.OneToOneField(ExternalUrl, on_delete=models.CASCADE, related_name="musicianWebsite", blank=True, null=True)
     def __str__(self):
         return self.knownAs if self.knownAs != "" and self.knownAs is not None else self.fullName
 

@@ -13,6 +13,7 @@
             <label>Conductor:</label>
             <a href="/services/musicians/{{ service.conductor_id }}/">{{ service.conductor.fullName }}</a>
             {% include "services/components/externalLink.html" with url=service.conductor.wikiUrl name="Wikipedia" %}
+            {% include "services/components/externalLink.html" with url=service.conductor.websiteUrl name="Website" %}
         </p>
     {% endif %}
     <p>Music List:</p>
