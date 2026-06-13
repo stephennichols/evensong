@@ -40,7 +40,7 @@ class Anthem(models.Model):
     def as_json(self):
         return {
             'title': self.title,
-            'composer': self.composer.fullName,
+            'composer': self.composer.knownAs if self.composer.knownAs != "" and self.composer.knownAs is not None else self.composer.fullName,
             'knownAs': self.knownAs,
         }
 
@@ -72,7 +72,7 @@ class MusicList(models.Model):
         }
 
 class Service(models.Model):
-    venue = models.OneToOneField(Venue, on_delete=models.CASCADE)
+    venue = models.ForeignKey(Venue, on_delete=models.CASCADE)
     startDateTime = models.DateTimeField()
     conductor = models.ForeignKey(Musician, on_delete=models.CASCADE, blank=True, null=True)
     choir = models.ForeignKey(Choir, on_delete=models.CASCADE, related_name="serviceChoir", blank=True, null=True)
@@ -83,8 +83,8 @@ class Service(models.Model):
         return {
             'venue': self.venue.name,
             'startDateTime': self.startDateTime.strftime('%Y-%m-%d %H:%M'),
-            'conductor': self.conductor.fullName,
-            'choir': self.choir.name,
+            'conductor': self.conductor.fullName if self.conductor is not None else None,
+            'choir': self.choir.name if self.choir is not None else None,
             'musicList': self.musicList.as_json(),
         }
     def as_public_json(self):
