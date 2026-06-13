@@ -1,4 +1,6 @@
 from django.db import models
+from django.core import serializers
+import json
 
 class ExternalUrl(models.Model):
     urlType = models.CharField(max_length=50)
@@ -35,6 +37,12 @@ class Anthem(models.Model):
     knownAs = models.CharField(max_length=255, blank=True, null=True)
     def __str__(self):
         return self.knownAs if self.knownAs != "" and self.knownAs is not None else self.title
+    def as_json(self):
+        return {
+            'title': self.title,
+            'composer': self.composer.fullName,
+            'knownAs': self.knownAs,
+        }
 
 class Canticles(models.Model):
     description = models.CharField(max_length=255)
@@ -56,6 +64,12 @@ class MusicList(models.Model):
     anthem = models.ForeignKey(Anthem, on_delete=models.CASCADE, unique=False)
     def __str__(self):
         return self.responses.knownAs + " Responses, " + self.canticles.knownAs + ", " + self.anthem.__str__()
+    def as_json(self):
+        return {
+            'responses': self.responses.knownAs,
+            'canticles': self.canticles.knownAs,
+            'anthem': self.anthem.as_json(),
+        }
 
 class Service(models.Model):
     venue = models.OneToOneField(Venue, on_delete=models.CASCADE)
@@ -65,4 +79,13 @@ class Service(models.Model):
     musicList = models.OneToOneField(MusicList, on_delete=models.CASCADE)
     def __str__(self):
         return self.venue.name + " " + self.startDateTime.strftime('%d %h %Y %H:%M')
-
+    def as_json(self):
+        return {
+            'venue': self.venue.name,
+            'startDateTime': self.startDateTime.strftime('%Y-%m-%d %H:%M'),
+            'conductor': self.conductor.fullName,
+            'choir': self.choir.name,
+            'musicList': self.musicList.as_json(),
+        }
+    def as_public_json(self):
+        return json.dumps(self.as_json())
