@@ -33,7 +33,7 @@ class Choir(models.Model):
 
 class Anthem(models.Model):
     title = models.CharField(max_length=255)
-    composer = models.OneToOneField(Musician, on_delete=models.CASCADE)
+    composer = models.ForeignKey(Musician, on_delete=models.CASCADE)
     knownAs = models.CharField(max_length=255, blank=True, null=True)
     def __str__(self):
         return self.knownAs if self.knownAs != "" and self.knownAs is not None else self.title
@@ -46,21 +46,21 @@ class Anthem(models.Model):
 
 class Canticles(models.Model):
     description = models.CharField(max_length=255)
-    composer = models.OneToOneField(Musician, on_delete=models.CASCADE)
+    composer = models.ForeignKey(Musician, on_delete=models.CASCADE)
     knownAs = models.CharField(max_length=255)
     def __str__(self):
         return self.knownAs
 
 class Responses(models.Model):
     title = models.CharField(max_length=255, blank=True, null=True)
-    composer = models.OneToOneField(Musician, on_delete=models.CASCADE)
+    composer = models.ForeignKey(Musician, on_delete=models.CASCADE)
     knownAs = models.CharField(max_length=255)
     def __str__(self):
         return self.knownAs
 
 class MusicList(models.Model):
-    responses = models.OneToOneField(Responses, on_delete=models.CASCADE)
-    canticles = models.OneToOneField(Canticles, on_delete=models.CASCADE)
+    responses = models.ForeignKey(Responses, on_delete=models.CASCADE)
+    canticles = models.ForeignKey(Canticles, on_delete=models.CASCADE)
     anthem = models.ForeignKey(Anthem, on_delete=models.CASCADE, unique=False)
     def __str__(self):
         return self.responses.knownAs + " Responses, " + self.canticles.knownAs + ", " + self.anthem.__str__()
