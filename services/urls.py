@@ -9,5 +9,6 @@ urlpatterns = [
     path("canticles/<int:canticles_id>/", views.canticlesIndex, name="canticlesIndex"),
     path("anthems/<int:anthem_id>/", views.anthemIndex, name="anthemIndex"),
     path("musicians/<int:musician_id>/", views.musicianIndex, name="musicianIndex"),
+    path("musicians/add", views.musicianAdd, name="musicianAdd"),
     path("venues/<int:venue_id>/", views.venueIndex, name="venueIndex"),
 ]

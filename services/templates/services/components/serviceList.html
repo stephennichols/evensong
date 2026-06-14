@@ -1,0 +1,9 @@
+{% if services %}
+<ul>
+    {% for service in services %}
+    <li><a href="/services/{{ service.id }}/">{{ service }}</a></li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No matching services found.</p>
+{% endif %}

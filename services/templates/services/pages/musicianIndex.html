@@ -1,0 +1,22 @@
+{% extends "services/base.html" %}
+{% block content %}
+    {% if heading %}
+        <h2>{{ heading }}</h2>
+    {% endif %}
+    {% include "services/components/serviceList.html" with services=services %}
+    <h3>Add new musician</h3>
+    <form method="post" action="/services/musicians/add">
+        {% csrf_token %}
+        <fieldset>
+            <p>
+                <label for="fullName">Full Name:</label>
+                <input id="fullName" type="text" name="fullName"/>
+            </p>
+            <p>
+                <label for="knownAs">Known as:</label>
+                <input id="knownAs" type="text" name="knownAs"/>
+            </p>
+            <input type="submit" value="Add">
+        </fieldset>
+    </form>
+    {% endblock %}

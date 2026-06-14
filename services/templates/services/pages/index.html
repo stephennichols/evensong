@@ -3,13 +3,5 @@
     {% if heading %}
         <h2>{{ heading }}</h2>
     {% endif %}
-    {% if services %}
-    <ul>
-        {% for service in services %}
-        <li><a href="/services/{{ service.id }}/">{{ service }}</a></li>
-        {% endfor %}
-    </ul>
-    {% else %}
-    <p>No matching services found.</p>
-    {% endif %}
+    {% include "services/components/serviceList.html" with services=services %}
 {% endblock %}
