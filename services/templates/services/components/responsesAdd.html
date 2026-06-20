@@ -1,0 +1,19 @@
+<h3>Add new responses</h3>
+<form method="post" action="/services/responses/add">
+    {% csrf_token %}
+    <fieldset>
+        <p>
+            <label for="composerName">Composer:</label>
+            <input id="composerName" type="text" name="composerName"/>
+        </p>
+        <p>
+            <label for="title">Title:</label>
+            <input id="title" type="text" name="title"/>
+        </p>
+        <p>
+            <label for="knownAs">Known as:</label>
+            <input id="knownAs" type="text" name="knownAs"/>
+        </p>
+        <input type="submit" value="Add">
+    </fieldset>
+</form>

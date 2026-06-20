@@ -1,9 +1,8 @@
 {% extends "services/base.html" %}
 {% block content %}
-    {% include "services/components/responsesDetails.html" with responses=responses %}
     {% if heading %}
         <h2>{{ heading }}</h2>
     {% endif %}
-    {% include "services/components/serviceList.html" with services=services %}
+    {% include "services/components/responsesList.html" with responses=responses %}
     {% include "services/components/responsesAdd.html" %}
 {% endblock %}

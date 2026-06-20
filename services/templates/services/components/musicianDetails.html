@@ -1,0 +1,27 @@
+<h3>Musician:</h3>
+<fieldset>
+    <p>
+        <label for="fullName">Full Name:</label>
+        <label id="fullName">{{ musician.fullName }}</label>
+    </p>
+    <p>
+        <label for="knownAs">Known as:</label>
+        <label id="knownAs">{{ musician.knownAs }}</label>
+    </p>
+    {% if musician.wikiUrl != None and musician.wikiUrl != '' %}
+    <p>
+        <label>Wikipedia page:</label>
+        {% include "services/components/externalLink.html" with url=musician.wikiUrl name=musician.wikiUrl %}
+    </p>
+    {% endif %}
+    {% if musician.websiteUrl != None and musician.websiteUrl != '' %}
+    <p>
+        <label>Personal website:</label>
+        {% include "services/components/externalLink.html" with url=musician.websiteUrl name=musician.websiteUrl %}
+    </p>
+    {% endif %}
+    <p>
+        <label>JSON format:</label>
+        {{ musician.as_public_json }}
+    </p>
+</fieldset>

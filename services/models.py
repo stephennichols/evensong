@@ -8,6 +8,8 @@ class ExternalUrl(models.Model):
     lastVerified =  models.DateTimeField()
     def __str__(self):
         return self.value
+    def as_public_json(self):
+        return json.dumps(self.as_json())
 
 class Venue(models.Model):
     name = models.CharField(max_length=50)
@@ -17,6 +19,8 @@ class Venue(models.Model):
     websiteUrl = models.OneToOneField(ExternalUrl, on_delete=models.CASCADE, related_name="venueWebsite", blank=True, null=True)
     def __str__(self):
         return self.name
+    def as_public_json(self):
+        return json.dumps(self.as_json())
 
 class Musician(models.Model):
     fullName = models.CharField(max_length=255)
@@ -25,12 +29,23 @@ class Musician(models.Model):
     websiteUrl = models.OneToOneField(ExternalUrl, on_delete=models.CASCADE, related_name="musicianWebsite", blank=True, null=True)
     def __str__(self):
         return self.knownAs if self.knownAs != "" and self.knownAs is not None else self.fullName
+    def as_json(self):
+        return {
+            'fullName': self.fullName,
+            'knownAs': self.knownAs,
+            'wikiUrl': self.wikiUrl.value if self.wikiUrl is not None else None,
+            'websiteUrl': self.websiteUrl.value if self.websiteUrl is not None else None,
+        }
+    def as_public_json(self):
+        return json.dumps(self.as_json())
 
 class Choir(models.Model):
     name = models.CharField(max_length=255)
     homeVenue = models.OneToOneField(Venue, on_delete=models.CASCADE, blank=True, null=True)
     def __str__(self):
         return self.name
+    def as_public_json(self):
+        return json.dumps(self.as_json())
 
 class Anthem(models.Model):
     title = models.CharField(max_length=255)
@@ -44,6 +59,8 @@ class Anthem(models.Model):
             'composer': self.composer.knownAs if self.composer.knownAs != "" and self.composer.knownAs is not None else self.composer.fullName,
             'knownAs': self.knownAs,
         }
+    def as_public_json(self):
+        return json.dumps(self.as_json())
 
 class Canticles(models.Model):
     description = models.CharField(max_length=255)
@@ -51,6 +68,8 @@ class Canticles(models.Model):
     knownAs = models.CharField(max_length=255)
     def __str__(self):
         return self.knownAs
+    def as_public_json(self):
+        return json.dumps(self.as_json())
 
 class Responses(models.Model):
     title = models.CharField(max_length=255, blank=True, null=True)
@@ -58,6 +77,14 @@ class Responses(models.Model):
     knownAs = models.CharField(max_length=255)
     def __str__(self):
         return self.knownAs
+    def as_json(self):
+        return {
+            'title': self.title,
+            'composer': self.composer.knownAs if self.composer.knownAs != "" and self.composer.knownAs is not None else self.composer.fullName,
+            'knownAs': self.knownAs
+        }
+    def as_public_json(self):
+        return json.dumps(self.as_json())
 
 class MusicList(models.Model):
     responses = models.ForeignKey(Responses, on_delete=models.CASCADE)
@@ -71,6 +98,8 @@ class MusicList(models.Model):
             'canticles': self.canticles.knownAs,
             'anthem': self.anthem.as_json(),
         }
+    def as_public_json(self):
+        return json.dumps(self.as_json())
 
 class Service(models.Model):
     venue = models.ForeignKey(Venue, on_delete=models.CASCADE)

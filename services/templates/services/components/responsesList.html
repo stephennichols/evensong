@@ -1,0 +1,9 @@
+{% if responses %}
+<ul>
+    {% for response in responses %}
+    <li><a href="/services/responses/{{ response.id }}/">{{ response }}</a></li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No musicians found.</p>
+{% endif %}

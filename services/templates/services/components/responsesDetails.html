@@ -1,0 +1,19 @@
+<h3>Responses:</h3>
+<fieldset>
+    <p>
+        <label for="composerName">Composer:</label>
+        <label id="composerName">{{ responses.composer }}</label>
+    </p>
+    <p>
+        <label for="title">Title:</label>
+        <label id="title">{{ responses.title }}</label>
+    </p>
+    <p>
+        <label for="knownAs">Known as:</label>
+        <label id="knownAs">{{ responses.knownAs }}</label>
+    </p>
+    <p>
+        <label>JSON format:</label>
+        {{ responses.as_public_json }}
+    </p>
+</fieldset>

@@ -1,0 +1,9 @@
+{% if musicians %}
+<ul>
+    {% for musician in musicians %}
+    <li><a href="/services/musicians/{{ musician.id }}/">{{ musician }}</a></li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No musicians found.</p>
+{% endif %}

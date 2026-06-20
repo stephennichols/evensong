@@ -2,8 +2,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.db.models import Q
 
-from .models import Service, Musician
-from .forms import MusicianForm
+from .models import Service, Musician, Responses
+from .forms import MusicianForm, ResponsesForm
 
 def index(request):
     latest_services = Service.objects.all().order_by("-startDateTime")[:5]
@@ -25,8 +25,45 @@ def responsesIndex(request, responses_id):
     services = (Service.objects
                .filter(musicList__responses_id=responses_id)
                )
+    responses = (Responses.objects
+               .filter(id=responses_id)
+               .first()
+               )
     template = loader.get_template("services/pages/responsesIndex.html")
-    context = {"services": services, "heading": "Services containing these responses"}
+    context = {"services": services, "responses": responses, "heading": "Services containing these responses"}
+    return HttpResponse(template.render(context, request))
+
+def responsesAdd(request):
+    if request.method == "POST":
+        # create a form instance and populate it with data from the request:
+        form = ResponsesForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            knownAs = form.cleaned_data.get("knownAs")
+            title = form.cleaned_data.get("title")
+            if Responses.objects.filter(knownAs=knownAs).exists():
+                return HttpResponse("400 Bad Request These responses already exist")
+            if not Musician.objects.filter(knownAs=knownAs).exists():
+                #TODO Auto create this musician
+                return HttpResponse("400 Bad Request Please add this composer first")
+            musician_id = Musician.objects.get(knownAs=knownAs).pk
+            r = Responses(title=title, composer_id=musician_id, knownAs=knownAs)
+            r.save()
+            if Responses.objects.filter(knownAs=knownAs).exists():
+                new_id = Responses.objects.get(knownAs=knownAs).pk.__str__()
+                # redirect to a new URL:
+                return HttpResponseRedirect("/services/responses/" + new_id + "/")
+            return HttpResponse("500 Server Error There was an error saving the form. Please try again.")
+        else:
+            return HttpResponse("400 Bad Request There was an error with your form. Please try again.")
+    else:
+        return HttpResponse("405 Method Not Allowed")
+
+def responsesList(request):
+    responses = Responses.objects.all().order_by("knownAs")
+    template = loader.get_template("services/pages/responsesList.html")
+    context = {"responses": responses, "heading": "Responses"}
     return HttpResponse(template.render(context, request))
 
 def canticlesIndex(request, canticles_id):
@@ -78,8 +115,15 @@ def musicianIndex(request, musician_id):
         Q(musicList__canticles__composer_id=musician_id) |
         Q(musicList__anthem__composer_id=musician_id)
     ))
+    musician = (Musician.objects.filter(id=musician_id).first())
     template = loader.get_template("services/pages/musicianIndex.html")
-    context = {"services": services, "heading": "Services featuring this musician"}
+    context = {"services": services, "musician": musician, "heading": "Services featuring this musician"}
+    return HttpResponse(template.render(context, request))
+
+def musicianList(request):
+    musicians = Musician.objects.all().order_by("knownAs")
+    template = loader.get_template("services/pages/musicianList.html")
+    context = {"musicians": musicians, "heading": "Musicians"}
     return HttpResponse(template.render(context, request))
 
 def venueIndex(request, venue_id):

@@ -1,9 +1,8 @@
 {% extends "services/base.html" %}
 {% block content %}
-    {% include "services/components/musicianDetails.html" with musician=musician %}
     {% if heading %}
         <h2>{{ heading }}</h2>
     {% endif %}
-    {% include "services/components/serviceList.html" with services=services %}
+    {% include "services/components/musicianList.html" with musicians=musicians %}
     {% include "services/components/musicianAdd.html" %}
 {% endblock %}
