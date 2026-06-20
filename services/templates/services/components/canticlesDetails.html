@@ -1,0 +1,20 @@
+<h2>Canticles:</h2>
+<fieldset>
+    <p>
+        <label for="composerName">Composer:</label>
+        <label id="composerName">{{ canticles.composer }}</label>
+        <a href="/services/musicians/{{ canticles.composer.id }}/" >Composer details</a>
+    </p>
+    <p>
+        <label for="description">Description:</label>
+        <label id="description">{{ canticles.description }}</label>
+    </p>
+    <p>
+        <label for="knownAs">Known as:</label>
+        <label id="knownAs">{{ canticles.knownAs }}</label>
+    </p>
+    <p>
+        <label>JSON format:</label>
+        {{ canticles.as_public_json }}
+    </p>
+</fieldset>

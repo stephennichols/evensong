@@ -68,6 +68,12 @@ class Canticles(models.Model):
     knownAs = models.CharField(max_length=255)
     def __str__(self):
         return self.knownAs
+    def as_json(self):
+        return {
+            'description': self.description,
+            'composer': self.composer.knownAs if self.composer.knownAs != "" and self.composer.knownAs is not None else self.composer.fullName,
+            'knownAs': self.knownAs
+        }
     def as_public_json(self):
         return json.dumps(self.as_json())
 

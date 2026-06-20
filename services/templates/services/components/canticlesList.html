@@ -1,0 +1,9 @@
+{% if canticles %}
+<ul>
+    {% for canticle in canticles %}
+    <li><a href="/services/canticles/{{ canticle.id }}/">{{ canticle }}</a></li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No canticles found.</p>
+{% endif %}

@@ -1,0 +1,19 @@
+<h3>Add new canticles</h3>
+<form method="post" action="/services/canticles/add">
+    {% csrf_token %}
+    <fieldset>
+        <p>
+            <label for="composerName">Composer:</label>
+            <input id="composerName" type="text" name="composerName"/>
+        </p>
+        <p>
+            <label for="description">Description:</label>
+            <input id="description" type="text" name="description"/>
+        </p>
+        <p>
+            <label for="knownAs">Known as:</label>
+            <input id="knownAs" type="text" name="knownAs"/>
+        </p>
+        <input type="submit" value="Add">
+    </fieldset>
+</form>

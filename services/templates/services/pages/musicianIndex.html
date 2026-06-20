@@ -5,6 +5,10 @@
         <h3>{{ heading }}</h3>
     {% endif %}
     {% include "services/components/serviceList.html" with services=services %}
+    <h3>Responses by this composer:</h3>
+    {% include "services/components/responsesList.html" with responses=responses_by_composer %}
+    <h3>Canticles by this composer:</h3>
+    {% include "services/components/canticlesList.html" with canticles=canticles_by_composer %}
     {% include "services/components/musicianAdd.html" %}
     <a href="/services/musicians/">View all musicians</a>
 {% endblock %}
