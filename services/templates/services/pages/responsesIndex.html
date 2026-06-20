@@ -2,8 +2,9 @@
 {% block content %}
     {% include "services/components/responsesDetails.html" with responses=responses %}
     {% if heading %}
-        <h2>{{ heading }}</h2>
+        <h3>{{ heading }}</h3>
     {% endif %}
     {% include "services/components/serviceList.html" with services=services %}
     {% include "services/components/responsesAdd.html" %}
+    <a href="/services/responses/">View all responses</a>
 {% endblock %}

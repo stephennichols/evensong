@@ -2,8 +2,9 @@
 {% block content %}
     {% include "services/components/musicianDetails.html" with musician=musician %}
     {% if heading %}
-        <h2>{{ heading }}</h2>
+        <h3>{{ heading }}</h3>
     {% endif %}
     {% include "services/components/serviceList.html" with services=services %}
     {% include "services/components/musicianAdd.html" %}
+    <a href="/services/musicians/">View all musicians</a>
 {% endblock %}
