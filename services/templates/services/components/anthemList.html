@@ -1,0 +1,9 @@
+{% if anthems %}
+<ul>
+    {% for anthem in anthems %}
+    <li><a href="/services/anthems/{{ anthem.id }}/">{{ anthem }}</a></li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No anthems found.</p>
+{% endif %}

@@ -9,6 +9,8 @@
     {% include "services/components/responsesList.html" with responses=responses_by_composer %}
     <h3>Canticles by this composer:</h3>
     {% include "services/components/canticlesList.html" with canticles=canticles_by_composer %}
+    <h3>Anthems by this composer:</h3>
+    {% include "services/components/anthemList.html" with anthems=anthems_by_composer %}
     {% include "services/components/musicianAdd.html" %}
     <a href="/services/musicians/">View all musicians</a>
 {% endblock %}

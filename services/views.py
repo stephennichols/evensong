@@ -2,8 +2,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.db.models import Q
 
-from .models import Service, Musician, Responses, Canticles
-from .forms import MusicianForm, ResponsesForm, CanticlesForm
+from .models import Service, Musician, Responses, Canticles, Anthem
+from .forms import MusicianForm, ResponsesForm, CanticlesForm, AnthemForm
 
 def index(request):
     latest_services = Service.objects.all().order_by("-startDateTime")[:5]
@@ -121,8 +121,47 @@ def anthemIndex(request, anthem_id):
     services = (Service.objects
                 .filter(musicList__anthem_id=anthem_id)
                 )
-    template = loader.get_template("services/pages/index.html")
-    context = {"services": services, "heading": "Services containing this anthem:"}
+    anthem = (Anthem.objects.filter(id=anthem_id).first())
+    template = loader.get_template("services/pages/anthemIndex.html")
+    context = {
+        "services": services,
+        "anthem": anthem,
+        "heading": "Services containing this anthem:"
+    }
+    return HttpResponse(template.render(context, request))
+
+def anthemAdd(request):
+    if request.method == "POST":
+        # create a form instance and populate it with data from the request:
+        form = AnthemForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            knownAs = form.cleaned_data.get("knownAs")
+            title = form.cleaned_data.get("title")
+            composerName = form.cleaned_data.get("composerName")
+            if Anthem.objects.filter(title=title).filter(composer__knownAs=composerName).exists():
+                return HttpResponse("400 Bad Request This anthem already exists: " + knownAs)
+            if not Musician.objects.filter(knownAs=composerName).exists():
+                #TODO Auto create this musician
+                return HttpResponse("400 Bad Request Please add this composer first: " + composerName)
+            musician_id = Musician.objects.get(knownAs=composerName).pk
+            r = Anthem(title=title, composer_id=musician_id, knownAs=knownAs)
+            r.save()
+            if Anthem.objects.filter(title=title).filter(composer__knownAs=composerName).exists():
+                new_id = Anthem.objects.filter(title=title).get(composer__knownAs=composerName).pk.__str__()
+                # redirect to a new URL:
+                return HttpResponseRedirect("/services/anthems/" + new_id + "/")
+            return HttpResponse("500 Server Error There was an error saving the form. Please try again.")
+        else:
+            return HttpResponse("400 Bad Request There was an error with your form. Please try again.")
+    else:
+        return HttpResponse("405 Method Not Allowed")
+
+def anthemList(request):
+    anthems = Anthem.objects.all().order_by("title", "composer__knownAs")
+    template = loader.get_template("services/pages/anthemList.html")
+    context = {"anthems": anthems, "heading": "Anthems"}
     return HttpResponse(template.render(context, request))
 
 def musicianAdd(request):
@@ -161,12 +200,14 @@ def musicianIndex(request, musician_id):
     musician = (Musician.objects.filter(id=musician_id).first())
     responses_by_composer = Responses.objects.filter(composer_id=musician_id).order_by("knownAs")
     canticles_by_composer = Canticles.objects.filter(composer_id=musician_id).order_by("knownAs")
+    anthems_by_composer = Anthem.objects.filter(composer_id=musician_id).order_by("knownAs")
     template = loader.get_template("services/pages/musicianIndex.html")
     context = {
         "services": services,
         "musician": musician,
         "responses_by_composer": responses_by_composer,
         "canticles_by_composer": canticles_by_composer,
+        "anthems_by_composer": anthems_by_composer,
         "heading": "Services featuring this musician:"}
     return HttpResponse(template.render(context, request))
 

@@ -1,0 +1,10 @@
+{% extends "services/base.html" %}
+{% block content %}
+    {% include "services/components/anthemDetails.html" with anthem=anthem %}
+    {% if heading %}
+        <h3>{{ heading }}</h3>
+    {% endif %}
+    {% include "services/components/serviceList.html" with services=services %}
+    {% include "services/components/anthemAdd.html" %}
+    <a href="/services/anthems">View all anthems</a>
+{% endblock %}

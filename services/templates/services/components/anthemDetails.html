@@ -1,0 +1,20 @@
+<h2>Anthem:</h2>
+<fieldset>
+    <p>
+        <label for="title">Title:</label>
+        <label id="title">{{ anthem.title }}</label>
+    </p>
+    <p>
+        <label for="composerName">Composer:</label>
+        <label id="composerName">{{ anthem.composer }}</label>
+        <a href="/services/musicians/{{ anthem.composer.id }}/" >Composer details</a>
+    </p>
+    <p>
+        <label for="knownAs">Known as:</label>
+        <label id="knownAs">{{ anthem.knownAs }}</label>
+    </p>
+    <p>
+        <label>JSON format:</label>
+        {{ anthem.as_public_json }}
+    </p>
+</fieldset>
